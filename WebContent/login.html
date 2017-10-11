@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>知乎MINI-ENJOY YOUR LIFE</title>
+<meta name="author" content="DeathGhost" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="icon" href="images/logo.png" type="image/x-icon"/>
+<style>
+body{height:100%;background:#16a085;overflow:hidden;}
+canvas{z-index:-1;position:absolute;}
+</style>
+<script src="js/jquery.js"></script>
+<script src="js/verificationNumbers.js"></script>
+<script src="js/Particleground.js"></script>
+<script type="text/javascript">
+
+
+
+</script>
+<script>
+
+$(document).ready(function(){
+	
+	$("#LoginButton").click(function(){
+	
+		
+		var LoginPassWord=$("#LoginPassWord").val();
+		var LoginUserName=$("#LoginUserName").val();
+		var codetext=$("#J_codetext").val();
+		
+		 $.ajax({
+		        type: "POST",
+		        cache: false,
+		        url: "LoginController",
+		        data: {LoginUserName:LoginUserName,LoginPassWord:LoginPassWord,J_codetext:codetext},
+		         dataType: "json",
+		        success: function (data) {
+		        	
+		        	   if (data.code == -1) {
+		        		  
+		        		   $("#LoginErrMsg").text("* 该账号还未注册!") 
+		        		   setTimeout(function(){
+		        			   $("#LoginErrMsg").text("");
+                                     },6000);
+		        		 
+		        	   }else if(data.code == 0){
+		        		   
+		        		   $("#LoginErrMsg").text("* 账号或者用户名错误!") 
+		        		   setTimeout(function(){
+		        			   $("#LoginErrMsg").text("");
+                                     },6000);
+		        	   }else if(data.code == 2){
+		        		   $("#LoginErrMsg").text("* 输入验证码有误!") 
+		        		   setTimeout(function(){
+		        			   $("#LoginErrMsg").text("");
+                                     },6000);
+		        	   }else if(data.code == -2){
+		        		   $("#LoginErrMsg").text("* 登陆信息不能为空!") 
+		        		   setTimeout(function(){
+		        			   $("#LoginErrMsg").text("");
+                                     },6000);
+		        	   }else{
+		        		   $("#LoginErrMsg").text("* 登陆成功!") 
+		        		   setTimeout(function(){
+		        			   $("#LoginErrMsg").text("");
+		        				window.location.href="first.jsp";
+                                     },1000);
+		        	   }
+		         
+		        }
+
+		    });
+		
+		
+	});
+	
+		
+});
+
+
+
+
+
+
+
+$(document).ready(function(){
+	
+	$("#RegisterButton").click(function(){
+		
+		var Mail=$("#Mail").val();
+		var PassWord=$("#PassWord").val();
+		var NickName=$("#NickName").val();
+		var MailCode=$("#MailCode").val();
+		
+		 $.ajax({
+		        type: "POST",
+		        cache: false,
+		        url: "RegisterController",
+		        data: {Mail:Mail,PassWord:PassWord,NickName:NickName,MailCode:MailCode},
+		         dataType: "json",
+		        success: function (data) {
+		        	
+		        	   if (data.code == 1) {
+		        		  
+		        		   $("#RegisterErroMsg").text("* 注册成功!正在跳转至登陆...") 
+		        		   setTimeout(function(){
+		        			   $("#RegisterErroMsg").text("");
+			        			 $("#registerbuttom").css('color','black');
+			        			$("#registerbuttom").css('border-bottom','none');
+			        			   $("#loginbutton").css('color','white');
+			        				  $("#loginbutton").css('border-bottom','1.5px white solid');
+			        				  $("#login").show();
+			        				   $("#register").hide(); 
+                                     },3000);
+		        		 
+		        	   }else if(data.code == 0){
+		        		   
+		        		   $("#RegisterErroMsg").text("* 所填信息不能为空!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        	   }else if(data.code == 2){
+		        		   $("#RegisterErroMsg").text("* 邮箱验证码不能为空!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        		   
+		        	   }else if(data.code == 3){
+		        		   $("#RegisterErroMsg").text("* 邮箱格式不正确!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        		   
+		        	   }else if(data.code == -1){
+		        		   $("#RegisterErroMsg").text("* 邮箱验证码不正确!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        		   
+		        	   }
+		         
+		        }
+
+		    });
+		
+		
+	});
+	
+		
+});
+
+
+
+$(document).ready(function(){
+	
+	$("#sendMail").click(function(){
+		
+		
+		var Mail=$("#Mail").val();
+		
+		 $.ajax({
+		        type: "POST",
+		        cache: false,
+		        url: "MailSendController",
+		        data: {Mail:Mail},
+		         dataType: "json",
+		        success: function (data) {
+		        	   if (data.code == 1) {
+		        		   var o=document.getElementById("sendMail");
+		        		   var wait=60;
+		        		   setInterval(time(o), 0);
+		        		   function time(o) {   
+		        	 if (wait == 0) {
+		        		 $("#sendMail").attr('disabled',true);  
+		        			    o.removeAttribute("disabled");   
+		        			    o.value="发送验证码";
+		        			    wait = 60;
+		        			   } else { 
+		        				   $("#sendMail").attr('disabled',true);  
+		        			    o.setAttribute("disabled", true);
+		        			    o.value="重新发送(" + wait + ")";
+		        			    wait--;
+		        			    setTimeout(function() {
+		        			     time(o)
+		        			    },
+		        			    1000)
+		        			   }
+		        		   }
+		        		 /*   $("#sendMail").attr('value','60秒后可再发送');
+		        		   $("#sendMail").attr('disabled',true);  
+		        		   setInterval(changeValue, 60000);
+		        		   
+		        		   
+		        		   function changeValue(){
+		        			 
+		        				  $("#sendMail").attr('disabled',false);  
+		        				 $("#sendMail").attr('value','发送验证码');
+		        				 data.code == 0;
+		        				 
+		        			}	 */
+		        	   }else if(data.code == 3){
+		        		   
+		        		   $("#RegisterErroMsg").text("* 邮箱不能为空!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        	   }else if(data.code == -1){
+		        		   
+		        		   $("#RegisterErroMsg").text("* 该邮箱已被注册!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        	   }else{
+		        		   $("#RegisterErroMsg").text("* 邮箱格式不正确!") 
+		        		   setInterval(hideMsg, 6000);
+		        		   function hideMsg(){
+		        			   $("#RegisterErroMsg").text("");
+		        		
+		        			}	
+		        		   
+		        	   }
+		         
+		        }
+
+		    });
+		
+		
+	});
+	
+		
+});
+
+
+
+
+$(document).ready(function(){
+	  $("#loginbutton").click(function(){
+		  $("#registerbuttom").css('color','black');
+		  $("#registerbuttom").css('border-bottom','none');
+		  $("#loginbutton").css('color','white');
+		  $("#loginbutton").css('border-bottom','1.5px white solid');
+		  $("#login").show();
+		   $("#register").hide();
+	  });
+	});
+
+$(document).ready(function(){
+	  $("#registerbuttom").click(function(){
+		  $("#Mail").val("");
+			$("#PassWord").val("");
+			$("#NickName").val("");
+			$("#MailCode").val("");
+		  $("#loginbutton").css('color','black');
+		  $("#loginbutton").css('border-bottom','none');
+		  $("#registerbuttom").css('color','white');
+		  $("#registerbuttom").css('border-bottom','1.5px white solid');
+		  $("#login").hide();
+		   $("#register").show();
+	  });
+	});
+		
+function change(){
+
+    var a=document.getElementById("imgs");
+    a.setAttribute('src','ValidateUtil?'+Math.random());
+}
+$(document).ready(function() {
+	 
+	
+  //粒子背景特效
+  $('body').particleground({
+    dotColor: '#5cbdaa',
+    lineColor: '#5cbdaa'
+  });
+  //验证码
+  createCode();
+  //测试提交，对接程序删除即可
+  $(".submit_btn").click(function(){
+	  location.href="index.html";
+	  });
+});
+
+	
+	
+</script>
+
+</head>
+<body>
+
+<div style="text-align:center;font-size:22px;margin-top:8%;margin-bottom:-7%">
+<span id="loginbutton" style="color:white;border-bottom:1.5px white solid"><strong>登陆</strong></span><span id="registerbuttom" style="margin-left:100px;color:black;"><strong>注册</strong></span></div>
+<dl class="admin_login" id="login" >
+ <dt>
+  <strong>开始您的知乎mini</strong>
+  <em>Fllow Me To Find</em>
+ </dt>
+ <dd class="user_icon">
+  <input type="text" placeholder="邮箱" class="login_txtbx" id="LoginUserName"  name="LoginUserName"/>
+ </dd>
+ <dd class="pwd_icon">
+  <input type="password" placeholder="密码" class="login_txtbx" id="LoginPassWord" name="LoginPassWord"/>
+ </dd>
+ <dd class="val_icon">
+  <div class="checkcode">
+
+    <input type="text" id="J_codetext"  name="J_codetext" placeholder="验证码" maxlength="8" style="width:182px" class="login_txtbx"/>
+   <!--  <canvas class="J_codeimg" id="myCanvas" onclick="createCode()">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas> -->
+   
+  </div>
+  <img onclick="change()" id="imgs" style="z-index:auto" src="ValidateUtil"/>
+
+  <!-- <input type="button" value="验证码核验" class="ver_btn" onClick="validate();"> -->
+ </dd>
+<!-- <div style="padding-top:10px;padding-bottom:10px">
+ <lable style="font-size:18px;font-family:cuisive;color:block"><input type="checkbox"   name="cookie" checked="checked" >    remember-me</lable></div> -->
+ <dd>
+  <input type="button" value="立即登陆" class="submit_btn" id="LoginButton"/>
+ </dd>
+ <span style="color:red;font-size:15px;padding-left:80px;" id="LoginErrMsg"></span>
+<!--  <dd>
+  <p>© 2015-2016 DeathGhost 版权所有</p>
+  <p>陕B2-20080224-1</p>
+ </dd> -->
+</dl>
+
+
+<dl class="admin_login" id="register" style="display:none">
+ <dt>
+  <strong>开启您的知乎mini</strong>
+  <em>只需要几个步骤</em>
+ </dt>
+ <dd class="user_icon">
+  <input type="text" placeholder="邮箱" class="login_txtbx" name="Mail" id="Mail"/>
+ </dd>
+ <dd class="pwd_icon">
+  <input type="password" placeholder="密码" class="login_txtbx" id="PassWord" name="PassWord"/>
+ </dd>
+ <dd class="val_icon">
+<input type="text" placeholder="昵称" class="login_txtbx" id="NickName" password="NickName" />
+ </dd>
+ <dd>
+<input type="text" placeholder="请输入邮箱验证码" style="width:140px;" class="login_txtbx" id="MailCode" name="MailCode"/>
+<input type="button" value="发送验证码" style="width:125px;opacity:0.5" class="submit_btn" id="sendMail"/>
+ </dd>
+  <dd>
+  <input type="button" value="立即注册" class="submit_btn" id="RegisterButton"/>
+ </dd>
+  
+  <span style="color:red;font-size:15px;padding-left:80px;" id="RegisterErroMsg"></span>
+<!--  
+  <p>© 2015-2016 DeathGhost 版权所有</p>
+  <p>陕B2-20080224-1</p>
+ </dd> -->
+</dl>
+</body>
+</html>
