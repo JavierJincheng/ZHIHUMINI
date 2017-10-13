@@ -7,7 +7,7 @@
 
 ## 总体设计 ##
 
-#### **本系统使用Java2E+ORACLE方式进行** ####
+#### **本系统使用Java2E+Tomcat+ORACLE方式进行** ####
 
  - 利用Ration rose 进行数据建模 
  - 利用ORACLE数据库进行数据库构建 
