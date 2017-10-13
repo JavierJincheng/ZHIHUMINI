@@ -46,16 +46,16 @@
 	|       |-- log4j.properties                                // log4j日志配置文件
     |-- WebContent                                              // 前端页面以及js、css部分
 	|       |-- bootstrap                                       // 第三方提供的bootstrap
-	|   	|-- css						                        // 第三方提供的css
-	|   	|-- js 						                        // 第三方提供的js
+	|   	|-- css						    // 第三方提供的css
+	|   	|-- js 						    // 第三方提供的js
 	|       |-- images                                          // 图片素材文件
 	|       |-- pages                                           // 关于固定页面部分的jsp
 	|       |-- topic                                           // 关于topic页面部分的jsp
 	|       |-- user                                            // 关于user页面部分的jsp
 	|       |-- WEB-INF 
-	|           | -- lib                 			            // jar 包存放位置
-	|           | -- web.xml             			            // 项目及工具的依赖配置文件
-	|-- README.md                        			            // 说明
+	|           | -- lib                 			    // jar 包存放位置
+	|           | -- web.xml             			    // 项目及工具的依赖配置文件
+	|-- README.md                        			    // 说明
 
 
 ## 项目功能 ##
